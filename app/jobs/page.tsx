@@ -43,7 +43,9 @@ export default function JobsPage() {
     pages: 1,
   });
   const [search, setSearch] = useState('');
+  const [location, setLocation] = useState('');
   const [salaryRange, setSalaryRange] = useState<[number, number]>([0, 300000]);
+  const [loading, setLoading] = useState(true);
 
   const fetchJobs = useCallback(async (page: number) => {
     setLoading(true);
@@ -54,6 +56,8 @@ export default function JobsPage() {
 
       if (search) params.append('search', search);
       if (location) params.append('location', location);
+      params.append('salaryMin', salaryRange[0].toString());
+      params.append('salaryMax', salaryRange[1].toString());
 
       const response = await fetch(`/api/jobs?${params.toString()}`);
       const data = await response.json();
@@ -67,7 +71,7 @@ export default function JobsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, location]);
+  }, [search, location, salaryRange]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -80,11 +84,6 @@ export default function JobsPage() {
 
     return () => window.clearTimeout(timeoutId);
   }, [authLoading, user, fetchJobs]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchJobs(1);
-  };
 
   if (authLoading) {
     return (
