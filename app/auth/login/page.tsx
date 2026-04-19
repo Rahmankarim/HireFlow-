@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FieldGroup, FieldLabel } from '@/components/ui/field';
-import { loginUser } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,9 +20,16 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    const result = await loginUser(email, password);
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    const result = await response.json();
 
-    if (result.error) {
+    if (!response.ok || result.error) {
       setError(result.error);
       setLoading(false);
       return;

@@ -164,6 +164,8 @@ Complete shadcn/ui component library including Button, Card, Dialog, Form, Input
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
    ```
 
+   If you deploy to Vercel, add the same variables in your Vercel project settings under Environment Variables. `.env.local` is only used on your machine and is not read by Vercel builds.
+
 4. **Set up the database**
 
    a. Create a new Supabase project

@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FieldGroup, FieldLabel } from '@/components/ui/field';
-import { registerUser } from '@/lib/auth';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -35,9 +34,16 @@ export default function RegisterPage() {
 
     setLoading(true);
 
-    const result = await registerUser(email, password, fullName, role);
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password, fullName, role }),
+    });
+    const result = await response.json();
 
-    if (result.error) {
+    if (!response.ok || result.error) {
       setError(result.error);
       setLoading(false);
       return;

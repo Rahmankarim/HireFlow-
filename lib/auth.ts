@@ -1,15 +1,21 @@
+import 'server-only';
+
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
 const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+  process.env.SUPABASE_ANON_KEY ??
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SECRET_KEY;
 
 const missingEnvVars = [
   !supabaseUrl && 'NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL',
-  !supabaseAnonKey && 'NEXT_PUBLIC_SUPABASE_ANON_KEY or SUPABASE_ANON_KEY',
-  !supabaseServiceKey && 'SUPABASE_SERVICE_ROLE_KEY',
+  !supabaseAnonKey &&
+    'NEXT_PUBLIC_SUPABASE_ANON_KEY or SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY',
+  !supabaseServiceKey && 'SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEY',
 ].filter(Boolean) as string[];
 
 const missingEnvMessage =
