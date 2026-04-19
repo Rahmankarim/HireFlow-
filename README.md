@@ -178,6 +178,7 @@ Complete shadcn/ui component library including Button, Card, Dialog, Form, Input
    # 2. scripts/02_seed_data.sql
    # 3. scripts/03_add_resumes_notifications.sql
    # 4. scripts/04_expand_mock_data.sql (optional)
+   # 5. scripts/05_fix_users_profile_columns.sql (for existing databases)
    ```
 
    c. Create a storage bucket for resumes:

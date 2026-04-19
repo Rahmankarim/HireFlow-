@@ -101,7 +101,7 @@ export async function registerUser(
     if (profileError) {
       // Clean up auth user if profile creation fails
       await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
-      return { error: 'Failed to create user profile' };
+      return { error: profileError.message || 'Failed to create user profile' };
     }
 
     return { user: authData.user };
